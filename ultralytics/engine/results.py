@@ -478,7 +478,7 @@ class Boxes(BaseTensor):
         if boxes.ndim == 1:
             boxes = boxes[None, :]
         n = boxes.shape[-1]
-        assert n in {6, 7}, f"expected 6 or 7 values but got {n}"  # xyxy, track_id, conf, cls
+        assert n in {6, 7, 86}, f"expected 6 or 7 values but got {n}"  # xyxy, track_id, conf, cls
         super().__init__(boxes, orig_shape)
         self.is_track = n == 7
         self.orig_shape = orig_shape
@@ -491,12 +491,17 @@ class Boxes(BaseTensor):
     @property
     def conf(self):
         """Return the confidence values of the boxes."""
-        return self.data[:, -2]
+        return self.data[:, 4]
 
     @property
     def cls(self):
         """Return the class values of the boxes."""
-        return self.data[:, -1]
+        return self.data[:, 5]
+    
+    @property
+    def cls_conf(self):
+        """Return the class values of the boxes."""
+        return self.data[:, 6:]
 
     @property
     def id(self):
