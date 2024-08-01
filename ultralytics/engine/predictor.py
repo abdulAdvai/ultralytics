@@ -258,7 +258,7 @@ class BasePredictor:
 
                 # Postprocess
                 with profilers[2]:
-                    self.results, output, loss = self.postprocess(preds, im, im0s)
+                    self.results, output = self.postprocess(preds, im, im0s)
                 self.run_callbacks("on_predict_postprocess_end")
 
                 # Visualize, save, write results
@@ -278,7 +278,7 @@ class BasePredictor:
                     LOGGER.info("\n".join(s))
 
                 self.run_callbacks("on_predict_batch_end")
-                yield (self.results, output, loss)
+                yield (self.results, output)
 
         # Release assets
         for v in self.vid_writer.values():
